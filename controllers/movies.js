@@ -61,5 +61,11 @@ module.exports.deleteMovie = (req, res, next) => {
         throw new Forbidden('Вы не можете удалять чужие фильмы');
       }
     } else { throw new NotFoundError('Фильм с указанным _id не найден'); }
+  }).catch((err) => {
+    if (err.name === 'CastError') {
+      next(new BadRequestError('Переданы некорректные данные при удалении фильма'));
+    } else {
+      next(err);
+    }
   });
 };

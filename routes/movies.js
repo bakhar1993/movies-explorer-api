@@ -31,14 +31,13 @@ router.post('/', celebrate({
       } return helpers.message('Заполните поле валидным URL');
     })
       .message({ 'string.required': 'Поле не должны быть пустым' }),
-    movieId: Joi.string().hex().length(24),
-    owner: Joi.string().hex().length(24),
+    movieId: Joi.string().required().hex().length(24),
   }),
 }), createMovie);
 
 router.delete('/:_id', celebrate({
   params: Joi.object().keys({
-    _id: Joi.string().hex().length(24),
+    _id: Joi.string().required().hex().length(24),
   }),
 }), deleteMovie);
 
