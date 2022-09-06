@@ -31,7 +31,8 @@ router.post('/', celebrate({
       } return helpers.message('Заполните поле валидным URL');
     })
       .message({ 'string.required': 'Поле не должны быть пустым' }),
-    movieId: Joi.string().required().hex().length(24),
+    //movieId: Joi.string().required().hex().length(24),
+movieId: Joi.number().required()
   }),
 }), createMovie);
 
