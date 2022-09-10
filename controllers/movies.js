@@ -4,10 +4,10 @@ const BadRequestError = require('../errors/bad-request-err');
 const Forbidden = require('../errors/forbidden-err');
 
 module.exports.getMovies = (req, res, next) => {
-  Movie.find({}).then((data) => {
+  Movie.find({owner: req.user._id}).then((data) => {
     if (data.length >= 1) {
       res.send(data);
-    } else {
+    } else { 
       res.status(200).send({ message: 'Фильмы не найдены' });
     }
   }).catch((err) => {
