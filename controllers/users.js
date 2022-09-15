@@ -18,27 +18,19 @@ module.exports.getUserInfo = (req, res, next) => {
 
 module.exports.updateUserInfo = (req, res, next) => {
   const { name, email } = req.body;
-  User.findOne({ email }).then((data) => {
-    if (!data) {
-      User.findByIdAndUpdate(req.user._id, { name, email }, {
-        new: true,
-        runValidators: true,
-      }).then((user) => {
-        if (user) {
-          res.status(200).send(user);
-        } else { throw new NotFoundError('Пользователь с указанным _id не найден'); }
-      }).catch((err) => {
-        if (err.name === 'ValidationError' || err.name === 'CastError') {
-          next(new BadRequestError('Переданы некорректные данные при обновлении профиля'));
-        } else {
-          next(err);
-        }
-      });
-    } else {
-      next(new ConflictingRequest('Email занят'));
-    }
+  User.findByIdAndUpdate(req.user._id, { name, email }, {
+    new: true,
+    runValidators: true,
+  }).then((user) => {
+    if (user) {
+      res.status(200).send(user);
+    } else { throw new NotFoundError('Пользователь с указанным _id не найден'); }
   }).catch((err) => {
-    next(err);
+    if (err.name === 'ValidationError' || err.name === 'CastError') {
+      next(new BadRequestError('Переданы некорректные данные при обновлении профиля'));
+    } else {
+      next(err);
+    }
   });
 };
 
